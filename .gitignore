@@ -1,0 +1,15 @@
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Archivos de caché de Python
+__pycache__/
+*.pyc
+
+# Archivos de datos generados o pesados
+*.avro
+*.csv
+
+# Archivos de sistema operativo
+.DS_Store

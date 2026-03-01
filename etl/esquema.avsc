@@ -1,0 +1,13 @@
+{
+  "type": "record",
+  "name": "Cargo",
+  "fields": [
+    {"name": "id", "type": "string"},
+    {"name": "company_name", "type": ["null", "string"], "default": null},
+    {"name": "company_id", "type": "string"},
+    {"name": "amount", "type": "double"},
+    {"name": "status", "type": "string"},
+    {"name": "created_at", "type": {"type": "long", "logicalType": "timestamp-millis"}},
+    {"name": "updated_at", "type": ["null", {"type": "long", "logicalType": "timestamp-millis"}], "default": null}
+  ]
+}

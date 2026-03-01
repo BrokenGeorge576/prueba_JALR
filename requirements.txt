@@ -1,0 +1,11 @@
+# Manipulación y limpieza de datos
+pandas==2.2.0
+
+# Formato intermedio
+fastavro==1.9.3
+
+# ORM para PostgreSQL
+SQLAlchemy==2.0.25
+
+# Driver de conexión a PostgreSQL
+psycopg2-binary==2.9.9

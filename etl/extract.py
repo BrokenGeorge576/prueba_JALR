@@ -1,22 +1,31 @@
 import json
+import os
+import sys
 
 import pandas as pd
 from fastavro import parse_schema, writer
+from loguru import logger
+
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+
+logger.remove()
+logger.add(sys.stderr, level=LOG_LEVEL)
+logger.add(
+    "logs/etl_{time:YYYY-MM-DD}.log",
+    rotation="10 MB",
+    retention="7 days",
+    serialize=True,
+    level="DEBUG",
+)
 
 CSV_FILE = "../data/data_prueba_técnica.csv"
 AVRO_FILE = "data.avro"
 SCHEMA_FILE = "esquema.avsc"
 
 
-def run_extraction():
-    print("Iniciando extracción y limpieza de datos...")
-
-    try:
-        df = pd.read_csv(CSV_FILE)
-    except FileNotFoundError:
-        print(f"Error: No se encontró el archivo {CSV_FILE}")
-        return
-
+def transform_data(df):
+    """Limpia y transforma el DataFrame para cumplir con el esquema."""
+    logger.debug("Iniciando transformación y limpieza de columnas...")
     df = df.dropna(subset=["id", "company_id"])
     df = df.rename(columns={"name": "company_name", "paid_at": "updated_at"})
     df["amount"] = pd.to_numeric(df["amount"], errors="coerce")
@@ -28,19 +37,35 @@ def run_extraction():
             lambda x: int(x.timestamp() * 1000) if pd.notnull(x) else None
         )
 
-    df = df.replace({pd.NA: None, float("nan"): None})
+    return df.replace({pd.NA: None, float("nan"): None})
+
+
+def run_extraction():
+    logger.info("Iniciando proceso de extracción de datos...")
+
+    try:
+        df = pd.read_csv(CSV_FILE)
+        logger.debug(f"Archivo CSV leído correctamente. Filas iniciales: {len(df)}")
+    except FileNotFoundError:
+        logger.error(f"Error: No se encontró el archivo {CSV_FILE}")
+        return
+
+    df = transform_data(df)
+    logger.debug(f"Datos transformados. Filas resultantes: {len(df)}")
 
     with open(SCHEMA_FILE, "r") as f:
         schema = json.load(f)
     parsed_schema = parse_schema(schema)
     records = df.to_dict("records")
 
-    with open(AVRO_FILE, "wb") as out:
-        writer(out, parsed_schema, records)
-
-    print(
-        f"Extracción exitosa. Datos validados y guardados en {AVRO_FILE} formato Avro."
-    )
+    try:
+        with open(AVRO_FILE, "wb") as out:
+            writer(out, parsed_schema, records)
+        logger.success(
+            f"Extracción exitosa. Datos validados y guardados en '{AVRO_FILE}' formato Avro."
+        )
+    except Exception as e:
+        logger.exception(f"Ocurrió un error al escribir el archivo Avro: {e}")
 
 
 if __name__ == "__main__":

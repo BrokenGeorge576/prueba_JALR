@@ -18,7 +18,13 @@ logger.add(
     level="DEBUG",
 )
 
-DB_URL = "postgresql://admin:secretpassword@postgres_db:5432/tech_test_db"
+DB_USER = os.getenv("POSTGRES_USER", "admin")
+DB_PASS = os.getenv("POSTGRES_PASSWORD", "secretpassword")
+DB_HOST = os.getenv("POSTGRES_HOST", "postgres_db")
+DB_PORT = os.getenv("POSTGRES_PORT", "5432")
+DB_NAME = os.getenv("POSTGRES_DB", "tech_test_db")
+
+DB_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 
 def run_loading():
@@ -29,9 +35,11 @@ def run_loading():
         with open("data.avro", "rb") as fo:
             records = list(reader(fo))
         df = pd.DataFrame(records)
-        logger.debug(f"Se leyeron {len(df)} registros del archivo Avro.")
+        logger.debug(f"Se leyeron {len(df)} registros válidos del archivo Avro.")
     except FileNotFoundError:
-        logger.error("Error: No se encontró data.avro. Ejecuta la extracción primero.")
+        logger.error(
+            "Error crítico: No se encontró data.avro. Ejecuta la extracción primero."
+        )
         return
 
     df_companies = df[["company_id", "company_name"]].drop_duplicates(
@@ -41,7 +49,7 @@ def run_loading():
 
     try:
         df_companies.to_sql("companies", engine, if_exists="append", index=False)
-        logger.success("Tabla 'companies' cargada exitosamente.")
+        logger.success("Catálogo 'companies' cargado exitosamente.")
     except Exception as e:
         logger.warning(f"Nota en carga de 'companies': {e}")
 
@@ -51,9 +59,9 @@ def run_loading():
 
     try:
         df_charges.to_sql("charges", engine, if_exists="append", index=False)
-        logger.success("Tabla 'charges' cargada con éxito.")
+        logger.success("Tabla transaccional 'charges' cargada con éxito.")
     except Exception as e:
-        logger.exception(f"Error crítico al cargar la tabla 'charges': {e}")
+        logger.exception(f"Error crítico al cargar 'charges': {e}")
 
 
 if __name__ == "__main__":

@@ -111,11 +111,12 @@ docker exec -it missing_number_api python api/main.py 42
 
 ```text
 ├── api/              # Lógica de la Sección 2 (FastAPI & CLI)
-├── data/             # Carpeta para el dataset original (ignorado por git)
+├── data/             # Carpeta para el dataset original 
 ├── db/               # Scripts de inicialización SQL y Vista
 ├── etl/              # Scripts de Extracción (extract.py) y Carga (load.py)
 ├── logs/             # Logs estructurados del proceso
 ├── docker-compose.yml # Orquestación de servicios
+├── .env # Archivo de credenciales y nivel de log
 └── Dockerfile        # Imagen base de Python para ETL y API
 
 ```

@@ -50,7 +50,7 @@ Estas fueron las reglas de negocio analizadas durante la realización del ejerci
 * **Formato Avro**: Usé Avro como paso intermedio para validar que los datos cumplan con el esquema exacto antes de tocar la base de datos.
 * **Ajuste de IDs**: El requerimiento solicitaba `VARCHAR(24)`, pero al detectar hashes de 40 caracteres en el CSV, se optó por ampliar a `VARCHAR(50)` para evitar pérdida de información crítica y colisiones.
 
-### Diagrama de Base de Datos (Punto 26)
+### Diagrama de Base de Datos 
 
 Este es el modelo relacional implementado para asegurar la integridad y dispersión de la información entre las entidades de compañías y transacciones:
 

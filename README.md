@@ -82,6 +82,7 @@ erDiagram
 docker exec -it etl_postgres psql -U admin -d tech_test_db -c "SELECT * FROM vw_daily_transactions LIMIT 10;"
 
 ```
+Nota: Tambien se pueden observar los resultados mediante el motor de bases de datos de su preferencia
 
 ---
 

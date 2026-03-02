@@ -1,7 +1,7 @@
 /* Creacion de la tabla companies. Se le asigna
 un ID como llave primaria */
 CREATE TABLE IF NOT EXISTS companies (
-id VARCHAR(24) PRIMARY KEY,
+id VARCHAR(50) PRIMARY KEY,
 name VARCHAR(130) NOT NULL
 );
 
@@ -9,8 +9,8 @@ name VARCHAR(130) NOT NULL
 los tipos de datos exactos amount decimal(6,12) y
 created_at timestamp */
 CREATE TABLE IF NOT EXISTS charges (
-id VARCHAR(24) PRIMARY KEY,
-company_id VARCHAR(24) NOT NULL,
+id VARCHAR(50) PRIMARY KEY,
+company_id VARCHAR(50) NOT NULL,
 amount DECIMAL(16,2) NOT NULL,
 status VARCHAR(30) NOT NULL,
 created_at TIMESTAMP NOT NULL,

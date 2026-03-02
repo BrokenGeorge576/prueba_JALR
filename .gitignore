@@ -9,7 +9,6 @@ __pycache__/
 
 # Archivos de datos generados o pesados
 *.avro
-*.csv
 
 # Archivos de sistema operativo
 .DS_Store

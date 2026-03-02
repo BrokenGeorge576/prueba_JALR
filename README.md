@@ -3,7 +3,7 @@
 Este repositorio contiene la solución a la prueba técnica dividida en dos grandes secciones: un pipeline **ETL robusto** para el procesamiento de transacciones financieras y una **API/CLI** para la resolución de un acertijo lógico-matemático.
 
 > **Nota de Seguridad sobre el archivo `.env**`:
-> Para facilitar la clonación, revisión y ejecución directa de esta prueba mediante `docker-compose up`, se ha incluido el archivo `.env` con las credenciales locales de la base de datos. Reconozco plenamente que en un entorno real, **este archivo jamás debe ser versionado** por motivos de ciberseguridad.
+> Para facilitar la clonación, revisión y ejecución directa de esta prueba mediante `docker-compose up`, se ha incluido el archivo `.env` con las credenciales locales de la base de datos y el archivo `data_prueba_tecnica.csv` con los datos para su posterior extraccion. Reconozco plenamente que en un entorno real, **este archivo jamás debe ser versionado** por motivos de ciberseguridady deberian de ser agregados al archivo .gitignore.
 
 ---
 
